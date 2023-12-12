@@ -4,11 +4,21 @@
   </head>
   <body>
     <h1>Tua Lista de Tarefas</h1>
-    <input
-      id="id_nova_tarefa"
-      placeholder="Escreva uma nova tarefa"
-      type="text"
-    />
-    <table id="id_tabela_lista"></table>
+
+    <form method="POST">
+      <input
+        name="tarefa_texto"
+        id="id_nova_tarefa"
+        placeholder="Escreva uma nova tarefa"
+        type="text"
+      />
+      {% csrf_token %}
+    </form>
+
+    <table id="id_tabela_lista">
+      <tr>
+        <td>1: {{nova_tarefa_texto}}</td>
+      </tr>
+    </table>
   </body>
 </html>

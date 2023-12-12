@@ -37,9 +37,29 @@ class NewVisitorTest(unittest.TestCase):
         input_nova_tarefa.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        table = self.browser.find_element(By.ID, "id_tabela_lista")
-        linhas = table.find_elements(By.TAG_NAME, 'tr')
-        self.assertTrue(any(linha.text=='1: Comprar pão' for linha in linhas), "Novo item tarefa não apareceu na tabela")
+        tabela = self.browser.find_element(By.ID, "id_tabela_lista")
+
+        linhas = tabela.find_elements(By.TAG_NAME, 'tr')
+
+        self.assertIn("1: Comprar pão", [linha.text for linha in linhas])
+
+
+        input_nova_tarefa = self.browser.find_element(By.ID, "id_nova_tarefa")
+
+        input_nova_tarefa.send_keys("Comprar leite")
+
+        input_nova_tarefa.send_keys(Keys.ENTER)
+
+        time.sleep(1)
+
+        tabela = self.browser.find_element(By.ID, "id_tabela_lista")
+
+        linhas = tabela.find_elements(By.TAG_NAME, 'tr')
+
+        self.assertIn("1: Comprar pão", [linha.text for linha in linhas])
+        self.assertIn("2: Comprar leite", [linha.text for linha in linhas])
+
+
         # Ainda há um campo convidando ela a adicionar outro item.
         # Ela digita "Comprar leite"
         self.fail("Termine o teste")
