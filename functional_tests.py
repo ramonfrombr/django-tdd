@@ -11,6 +11,11 @@ class NewVisitorTest(unittest.TestCase):
 
     def tearDown(self):
         self.browser.quit()
+
+    def checa_linha_na_tabela_lista(self, linha_texto):
+        tabela = self.browser.find_element(By.ID, 'id_tabela_lista')
+        linhas = tabela.find_elements(By.TAG_NAME, 'tr')
+        self.assertIn(linha_texto, [linha.text for linha in linhas])
     
     def test_pode_criar_uma_lista_e_recuperar_mais_tarde(self):
 
@@ -37,28 +42,19 @@ class NewVisitorTest(unittest.TestCase):
         input_nova_tarefa.send_keys(Keys.ENTER)
         time.sleep(1)
 
-        tabela = self.browser.find_element(By.ID, "id_tabela_lista")
+        # A página atualiza, e agora exibe o item na lista
+        self.checa_linha_na_tabela_lista('1: Comprar pão')
 
-        linhas = tabela.find_elements(By.TAG_NAME, 'tr')
-
-        self.assertIn("1: Comprar pão", [linha.text for linha in linhas])
-
-
+        # Ainda há um campo para adicionar outro item
+        # Ela digita "Comprar leite" e aperta Enter
         input_nova_tarefa = self.browser.find_element(By.ID, "id_nova_tarefa")
-
         input_nova_tarefa.send_keys("Comprar leite")
-
         input_nova_tarefa.send_keys(Keys.ENTER)
-
         time.sleep(1)
 
-        tabela = self.browser.find_element(By.ID, "id_tabela_lista")
-
-        linhas = tabela.find_elements(By.TAG_NAME, 'tr')
-
-        self.assertIn("1: Comprar pão", [linha.text for linha in linhas])
-        self.assertIn("2: Comprar leite", [linha.text for linha in linhas])
-
+        # A página atualiza,e  agora exibe ambos itens na lista
+        self.checa_linha_na_tabela_lista('1: Comprar pão')
+        self.checa_linha_na_tabela_lista('2: Comprar leite')
 
         # Ainda há um campo convidando ela a adicionar outro item.
         # Ela digita "Comprar leite"
