@@ -5,13 +5,6 @@ from django.http import HttpRequest
 from django.template.loader import render_to_string
 
 class TestePaginaInicial(TestCase):
-    def test_url_raiz_redireciona_para_pagina_inicial(self):
-        funcao_encontrada = resolve('/')
-        self.assertEqual(funcao_encontrada.func, pagina_inicial)
-
-    def test_pagina_inicial_retorna_html_correto(self):
-        pedido = HttpRequest()
-        resposta = pagina_inicial(pedido)
-        html = resposta.content.decode('utf8')
-        html_esperado = render_to_string("inicio.html")
-        self.assertEqual(html, html_esperado)
+    def test_usa_template_inicio(self):
+        resposta = self.client.get('/')
+        self.assertTemplateUsed(resposta, 'inicio.html')
