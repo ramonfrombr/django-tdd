@@ -25,7 +25,7 @@ class NewVisitorTest(unittest.TestCase):
         self.assertIn("Tarefas", texto_cabecalho)
 
         # Ela é convidada a criar um novo item na lista de tarefas imediatamente
-        input_nova_tarefa = self.browser.find_element(By.ID, "id_novo_item")
+        input_nova_tarefa = self.browser.find_element(By.ID, "id_nova_tarefa")
 
         self.assertEqual(input_nova_tarefa.get_attribute("placeholder"), "Escreva uma nova tarefa")
 
@@ -38,8 +38,8 @@ class NewVisitorTest(unittest.TestCase):
         time.sleep(1)
 
         table = self.browser.find_element(By.ID, "id_tabela_lista")
-        linhas = table.find_element(By.TAG_NAME, 'tr')
-        self.assertTrue(any(linha.text=='1: Comprar pão' for linha in linhas))
+        linhas = table.find_elements(By.TAG_NAME, 'tr')
+        self.assertTrue(any(linha.text=='1: Comprar pão' for linha in linhas), "Novo item tarefa não apareceu na tabela")
         # Ainda há um campo convidando ela a adicionar outro item.
         # Ela digita "Comprar leite"
         self.fail("Termine o teste")
