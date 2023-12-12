@@ -16,9 +16,11 @@
     </form>
 
     <table id="id_tabela_lista">
+      {% for item in items %}
       <tr>
-        <td>1: {{nova_tarefa_texto}}</td>
+        <td>{{ forloop.counter }}: {{item.texto}}</td>
       </tr>
+      {% endfor %}
     </table>
   </body>
 </html>
