@@ -1,6 +1,8 @@
 from selenium import webdriver
 import unittest
-
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+import time
 
 class NewVisitorTest(unittest.TestCase):
 
@@ -18,18 +20,30 @@ class NewVisitorTest(unittest.TestCase):
 
         # Ela percebe que no título da página há a menção do nome do site
         self.assertIn("Listas de Tarefas", self.browser.title)
-        self.fail("Finish the test!")
+        
+        texto_cabecalho = self.browser.find_element(By.TAG_NAME, "h1").text
+        self.assertIn("Tarefas", texto_cabecalho)
 
         # Ela é convidada a criar um novo item na lista de tarefas imediatamente
+        input_nova_tarefa = self.browser.find_element(By.ID, "id_novo_item")
+
+        self.assertEqual(input_nova_tarefa.get_attribute("placeholder"), "Escreva uma nova tarefa")
 
         # Ela digita "Comprar pão" no campo
+        input_nova_tarefa.send_keys("Comprar pão")
 
         # Quando ela aperta Enter, a página atualiza, e agora a página lista
         # "1: Comprar pão" como sendo um item da lista de tarefas
+        input_nova_tarefa.send_keys(Keys.ENTER)
+        time.sleep(1)
 
+        table = self.browser.find_element(By.ID, "id_tabela_lista")
+        linhas = table.find_element(By.TAG_NAME, 'tr')
+        self.assertTrue(any(linha.text=='1: Comprar pão' for linha in linhas))
         # Ainda há um campo convidando ela a adicionar outro item.
         # Ela digita "Comprar leite"
-        
+        self.fail("Termine o teste")
+
         # A página atualiza novamente, e agora exibe ambos os itens na lista
 
         # Maria se pergunta se o site vai se lembrar da sua lista.
