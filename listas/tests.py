@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import resolve
 from listas.views import pagina_inicial
 from django.http import HttpRequest
+from django.template.loader import render_to_string
 
 class TestePaginaInicial(TestCase):
     def test_url_raiz_redireciona_para_pagina_inicial(self):
@@ -12,7 +13,5 @@ class TestePaginaInicial(TestCase):
         pedido = HttpRequest()
         resposta = pagina_inicial(pedido)
         html = resposta.content.decode('utf8')
-
-        self.assertTrue(html.startswith('<html>'))
-        self.assertIn('<title>Lista de Tarefas', html)
-        self.assertTrue(html.strip().endswith('</html>'))
+        html_esperado = render_to_string("inicio.html")
+        self.assertEqual(html, html_esperado)
