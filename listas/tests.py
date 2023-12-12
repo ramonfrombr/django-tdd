@@ -3,7 +3,7 @@ from django.urls import resolve
 from listas.views import pagina_inicial
 from django.http import HttpRequest
 
-class TestePagiaInicial(TestCase):
+class TestePaginaInicial(TestCase):
     def test_url_raiz_redireciona_para_pagina_inicial(self):
         funcao_encontrada = resolve('/')
         self.assertEqual(funcao_encontrada.func, pagina_inicial)
@@ -14,5 +14,5 @@ class TestePagiaInicial(TestCase):
         html = resposta.content.decode('utf8')
 
         self.assertTrue(html.startswith('<html>'))
-        self.assertIn('<title>Listas de Tarefas', html)
-        self.assertTrue(html.endswith('</html>'))
+        self.assertIn('<title>Lista de Tarefas', html)
+        self.assertTrue(html.strip().endswith('</html>'))
